@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colegio Nombre</title>
+    <style>
+        /* Estilos CSS */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        nav {
+            background-color: #444;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .content {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        .content.active {
+            display: block;
+        }
+        .content img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>¡Bienvenido al Colegio Nombre!</h1>
+    </header>
+    <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="#noticias">Noticias</a>
+        <a href="#boletines">Boletines</a>
+        <a href="#informacion">Información</a>
+    </nav>
+    <div class="content active" id="inicio">
+        <!-- Portada con varias fotos -->
+        <h2>Portada</h2>
+        <img src="foto1.jpg" alt="Foto 1">
+        <img src="foto2.jpg" alt="Foto 2">
+        <img src="foto3.jpg" alt="Foto 3">
+    </div>
+    <div class="content" id="noticias">
+        <!-- Noticias -->
+        <h2>Noticias</h2>
+        <img src="noticia1.jpg" alt="Noticia 1">
+        <p>Descripción de la noticia 1...</p>
+    </div>
+    <div class="content" id="boletines">
+        <!-- Boletines -->
+        <h2>Boletines</h2>
+        <img src="boletin1.jpg" alt="Boletín 1">
+        <p>Descripción del boletín 1...</p>
+    </div>
+    <div class="content" id="informacion">
+        <!-- Información -->
+        <h2>Información</h2>
+        <img src="informacion1.jpg" alt="Información 1">
+        <p>Descripción de la información 1...</p>
+    </div>
+
+    <script>
+        // Script JavaScript para mostrar/ocultar secciones al hacer clic en los botones del menú
+        document.addEventListener("DOMContentLoaded", function() {
+            // Obtenemos todas las secciones de contenido
+            var sections = document.querySelectorAll('.content');
+            
+            // Mostramos la sección de inicio por defecto
+            showSection('inicio');
+
+            // Agregamos eventos de clic a todos los enlaces del menú
+            document.querySelectorAll('nav a').forEach(function(link) {
+                link.addEventListener('click', function(event) {
+                    var sectionId = this.getAttribute('href').substring(1);
+                    showSection(sectionId);
+                    // Guardamos la sección actual en el almacenamiento local del navegador
+                    localStorage.setItem('lastSection', sectionId);
+                    event.preventDefault(); // Prevenimos el comportamiento predeterminado del enlace
+                });
+            });
+
+            // Función para mostrar la sección deseada y ocultar las demás
+            function showSection(sectionId) {
+                sections.forEach(function(section) {
+                    if (section.id === sectionId) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            }
+
+            // Obtenemos la última sección visitada desde el almacenamiento local
+            var lastSection = localStorage.getItem('lastSection');
+            if (lastSection) {
+                showSection(lastSection);
+            }
+        });
+    </script>
+</body>
+</html>
