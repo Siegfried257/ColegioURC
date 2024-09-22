@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat con Firebase</title>
+    <title>Chat con Firebase y Reproductor de Música</title>
     <style>
         /* Estilos CSS */
         body {
@@ -52,6 +52,13 @@
         }
         button:hover {
             background-color: #555;
+        }
+        .music-player {
+            margin-top: 20px;
+        }
+        audio {
+            width: 100%;
+            margin-top: 10px;
         }
     </style>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
@@ -108,12 +115,32 @@
                     sendMessage();
                 }
             });
+
+            // Función para cargar y reproducir archivos de música
+            const audioElement = document.getElementById('audioPlayer');
+            const trackList = document.getElementById('trackList');
+            
+            // Simulando archivos MP3 en la misma carpeta (esto sería dinámico en un entorno de servidor)
+            const mp3Files = ['cancion1.mp3', 'cancion2.mp3', 'cancion3.mp3']; // Archivos MP3
+
+            mp3Files.forEach((file, index) => {
+                const option = document.createElement('option');
+                option.value = file;
+                option.textContent = `Canción ${index + 1}`;
+                trackList.appendChild(option);
+            });
+
+            // Reproducir la pista seleccionada
+            trackList.addEventListener('change', function() {
+                audioElement.src = trackList.value;
+                audioElement.play();
+            });
         });
     </script>
 </head>
 <body>
     <header>
-        <h1>Chat con Firebase</h1>
+        <h1>Chat con Firebase y Reproductor de Música</h1>
     </header>
 
     <div class="chat-box">
@@ -122,6 +149,18 @@
         </div>
         <input type="text" id="chatInput" placeholder="Escribe un mensaje..." />
         <button id="sendButton">Enviar</button>
+    </div>
+
+    <div class="music-player">
+        <h2>Reproductor de Música</h2>
+        <select id="trackList">
+            <option value="">Selecciona una canción</option>
+            <!-- Las canciones se cargarán aquí -->
+        </select>
+        <audio id="audioPlayer" controls>
+            <source src="" type="audio/mp3">
+            Tu navegador no soporta el elemento de audio.
+        </audio>
     </div>
 </body>
 </html>
