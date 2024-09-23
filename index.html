@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reproductor de Música</title>
+    <title>Reproductor de Música y Videos</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,12 +17,12 @@
             padding: 10px;
             text-align: center;
         }
-        .music-player {
+        .media-player {
             margin: 20px auto;
             max-width: 600px;
             text-align: center;
         }
-        audio {
+        audio, video {
             width: 100%;
             margin-top: 10px;
         }
@@ -36,46 +36,72 @@
 </head>
 <body>
     <header>
-        <h1>Reproductor de Música</h1>
+        <h1>Reproductor de Música y Videos</h1>
     </header>
 
-    <div class="music-player">
-        <h2>Selecciona una canción:</h2>
-        <select id="trackList">
-            <option value="">Elige una canción</option>
-            <!-- Opciones de canciones se cargarán aquí -->
+    <div class="media-player">
+        <h2>Selecciona una canción o video:</h2>
+        <select id="mediaList">
+            <option value="">Elige una canción o video</option>
+            <!-- Opciones de canciones y videos se cargarán aquí -->
         </select>
-        <audio id="audioPlayer" controls>
+        <audio id="audioPlayer" controls style="display: none;">
             Tu navegador no soporta el elemento de audio.
         </audio>
+        <video id="videoPlayer" controls style="display: none;">
+            Tu navegador no soporta el elemento de video.
+        </video>
     </div>
 
     <script>
-        // Archivos MP3 alojados directamente en el repositorio de GitHub en el directorio raíz
+        // Archivos MP3 alojados directamente en GitHub Pages
         const mp3Files = [
-            'https://siegfried257.github.io/ColegioURC/1.mp3', 
-            'https://siegfried257.github.io/ColegioURC/2.mp3', 
-            'https://siegfried257.github.io/ColegioURC/3.mp3', 
-            'https://siegfried257.github.io/ColegioURC/4.mp3',
-            'https://siegfried257.github.io/ColegioURC/5.mp3'
+            { type: 'audio', url: 'https://siegfried257.github.io/ColegioURC/1.mp3', name: 'Canción 1' },
+            { type: 'audio', url: 'https://siegfried257.github.io/ColegioURC/2.mp3', name: 'Canción 2' },
+            { type: 'audio', url: 'https://siegfried257.github.io/ColegioURC/3.mp3', name: 'Canción 3' }
         ];
 
-        const trackList = document.getElementById('trackList');
-        const audioPlayer = document.getElementById('audioPlayer');
+        // Archivos de video alojados en Google Drive
+        const videoFiles = [
+            { type: 'video', url: 'https://drive.google.com/file/d/1dbgtgY99Xn-n784FNMA5_nRLvbK6U2st/view?usp=drivesdk', name: 'Video 1' },
+            { type: 'video', url: 'https://drive.google.com/uc?export=download&id=1VIDEO_ID_2', name: 'Video 2' }
+        ];
 
-        // Cargar canciones en el select
-        mp3Files.forEach((file, index) => {
+        // Combinar listas de canciones y videos
+        const mediaFiles = [...mp3Files, ...videoFiles];
+
+        const mediaList = document.getElementById('mediaList');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const videoPlayer = document.getElementById('videoPlayer');
+
+        // Cargar opciones en el select
+        mediaFiles.forEach((file, index) => {
             const option = document.createElement('option');
-            option.value = file;
-            option.textContent = `Canción ${index + 1}`;
-            trackList.appendChild(option);
+            option.value = index;
+            option.textContent = file.name;
+            mediaList.appendChild(option);
         });
 
-        // Reproducir la canción seleccionada
-        trackList.addEventListener('change', function() {
-            if (trackList.value) {
-                audioPlayer.src = trackList.value;
-                audioPlayer.play();
+        // Manejar la reproducción de medios seleccionados
+        mediaList.addEventListener('change', function() {
+            const selectedFile = mediaFiles[mediaList.value];
+
+            if (selectedFile) {
+                // Si es audio
+                if (selectedFile.type === 'audio') {
+                    audioPlayer.src = selectedFile.url;
+                    audioPlayer.style.display = 'block';
+                    videoPlayer.style.display = 'none';
+                    audioPlayer.play();
+                }
+
+                // Si es video
+                if (selectedFile.type === 'video') {
+                    videoPlayer.src = selectedFile.url;
+                    videoPlayer.style.display = 'block';
+                    audioPlayer.style.display = 'none';
+                    videoPlayer.play();
+                }
             }
         });
     </script>
