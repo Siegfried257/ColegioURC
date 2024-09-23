@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reproductor de Música y Videos</title>
+    <title>Reproductor de Música</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,12 +17,12 @@
             padding: 10px;
             text-align: center;
         }
-        .media-player {
+        .music-player {
             margin: 20px auto;
             max-width: 600px;
             text-align: center;
         }
-        audio, iframe {
+        audio {
             width: 100%;
             margin-top: 10px;
         }
@@ -32,77 +32,50 @@
             margin-top: 10px;
             font-size: 16px;
         }
-        iframe {
-            height: 315px; /* Ajusta el tamaño del iframe para videos de YouTube */
-            display: none;
-        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Reproductor de Música y Videos</h1>
+        <h1>Reproductor de Música</h1>
     </header>
 
-    <div class="media-player">
-        <h2>Selecciona una canción o video:</h2>
-        <select id="mediaList">
-            <option value="">Elige una canción o video</option>
-            <!-- Opciones de canciones y videos se cargarán aquí -->
+    <div class="music-player">
+        <h2>Selecciona una canción:</h2>
+        <select id="trackList">
+            <option value="">Elige una canción</option>
+            <!-- Opciones de canciones se cargarán aquí -->
         </select>
-        <audio id="audioPlayer" controls style="display: none;">
+        <audio id="audioPlayer" controls>
             Tu navegador no soporta el elemento de audio.
         </audio>
-        <iframe id="videoPlayer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 
     <script>
-        // Archivos MP3 alojados directamente en GitHub Pages
+        // Archivos MP3 alojados en Google Drive con enlaces directos de descarga
         const mp3Files = [
-            { type: 'audio', url: 'https://siegfried257.github.io/ColegioURC/1.mp3', name: 'Canción 1' },
-            { type: 'audio', url: 'https://siegfried257.github.io/ColegioURC/2.mp3', name: 'Canción 2' },
-            { type: 'audio', url: 'https://siegfried257.github.io/ColegioURC/3.mp3', name: 'Canción 3' }
+            'https://drive.google.com/uc?export=download&id=1du2H6UgKTNj8fJgkPcQQ5uDXWF2pHYq-', // Canción 1
+            'https://drive.google.com/uc?export=download&id=2A2B3C4D5EF6G7H', // Canción 2
+            'https://drive.google.com/uc?export=download&id=3A2B3C4D5EF6G7H', // Canción 3
+            'https://drive.google.com/uc?export=download&id=4A2B3C4D5EF6G7H', // Canción 4
+            'https://drive.google.com/uc?export=download&id=5A2B3C4D5EF6G7H'  // Canción 5
         ];
 
-        // Enlaces de videos de YouTube
-        const youtubeVideos = [
-            { type: 'video', url: 'https://www.youtube.com/embed/YpCzZshrfoJRazXr', name: 'Video 1 (YouTube)' }, // Ejemplo
-            { type: 'video', url: 'https://www.youtube.com/embed/VIDEO_ID_2', name: 'Video 2 (YouTube)' }
-        ];
-
-        // Combinar listas de canciones y videos
-        const mediaFiles = [...mp3Files, ...youtubeVideos];
-
-        const mediaList = document.getElementById('mediaList');
+        const trackList = document.getElementById('trackList');
         const audioPlayer = document.getElementById('audioPlayer');
-        const videoPlayer = document.getElementById('videoPlayer');
 
-        // Cargar opciones en el select
-        mediaFiles.forEach((file, index) => {
+        // Cargar canciones en el select
+        mp3Files.forEach((file, index) => {
             const option = document.createElement('option');
-            option.value = index;
-            option.textContent = file.name;
-            mediaList.appendChild(option);
+            option.value = file;
+            option.textContent = `Canción ${index + 1}`;
+            trackList.appendChild(option);
         });
 
-        // Manejar la reproducción de medios seleccionados
-        mediaList.addEventListener('change', function() {
-            const selectedFile = mediaFiles[mediaList.value];
-
-            if (selectedFile) {
-                // Si es audio
-                if (selectedFile.type === 'audio') {
-                    audioPlayer.src = selectedFile.url;
-                    audioPlayer.style.display = 'block';
-                    videoPlayer.style.display = 'none';
-                    audioPlayer.play();
-                }
-
-                // Si es video de YouTube
-                if (selectedFile.type === 'video') {
-                    videoPlayer.src = selectedFile.url;
-                    videoPlayer.style.display = 'block';
-                    audioPlayer.style.display = 'none';
-                }
+        // Reproducir la canción seleccionada
+        trackList.addEventListener('change', function() {
+            if (trackList.value) {
+                audioPlayer.src = trackList.value;
+                audioPlayer.play();
             }
         });
     </script>
