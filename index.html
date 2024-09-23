@@ -22,7 +22,7 @@
             max-width: 600px;
             text-align: center;
         }
-        audio, video {
+        audio, iframe {
             width: 100%;
             margin-top: 10px;
         }
@@ -31,6 +31,10 @@
             padding: 10px;
             margin-top: 10px;
             font-size: 16px;
+        }
+        iframe {
+            height: 315px; /* Ajusta el tamaño del iframe para videos de YouTube */
+            display: none;
         }
     </style>
 </head>
@@ -48,9 +52,7 @@
         <audio id="audioPlayer" controls style="display: none;">
             Tu navegador no soporta el elemento de audio.
         </audio>
-        <video id="videoPlayer" controls style="display: none;">
-            Tu navegador no soporta el elemento de video.
-        </video>
+        <iframe id="videoPlayer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 
     <script>
@@ -61,14 +63,14 @@
             { type: 'audio', url: 'https://siegfried257.github.io/ColegioURC/3.mp3', name: 'Canción 3' }
         ];
 
-        // Archivos de video alojados en Google Drive
-        const videoFiles = [
-            { type: 'video', url: 'https://drive.google.com/uc?export=download&id=1dbgtgY99Xn-n784FNMA5_nRLvbK6U2st', name: 'Video 1' },
-            { type: 'video', url: 'https://drive.google.com/uc?export=download&id=1VIDEO_ID_2', name: 'Video 2' }
+        // Enlaces de videos de YouTube
+        const youtubeVideos = [
+            { type: 'video', url: 'https://www.youtube.com/embed/YpCzZshrfoJRazXr', name: 'Video 1 (YouTube)' }, // Ejemplo
+            { type: 'video', url: 'https://www.youtube.com/embed/VIDEO_ID_2', name: 'Video 2 (YouTube)' }
         ];
 
         // Combinar listas de canciones y videos
-        const mediaFiles = [...mp3Files, ...videoFiles];
+        const mediaFiles = [...mp3Files, ...youtubeVideos];
 
         const mediaList = document.getElementById('mediaList');
         const audioPlayer = document.getElementById('audioPlayer');
@@ -95,12 +97,11 @@
                     audioPlayer.play();
                 }
 
-                // Si es video
+                // Si es video de YouTube
                 if (selectedFile.type === 'video') {
                     videoPlayer.src = selectedFile.url;
                     videoPlayer.style.display = 'block';
                     audioPlayer.style.display = 'none';
-                    videoPlayer.play();
                 }
             }
         });
